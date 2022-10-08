@@ -17,7 +17,7 @@ const currentPlayerTurn = () => `It's ${currentPlayer}'s turn`;
 
 // Setting the initial message to let the players know who's turn it is
 displayStatus.innerHTML = currentPlayerTurn();
-function handleCellPlayer() {
+function handleCellPlayed() {
 
 };
 
@@ -29,8 +29,21 @@ function handleResults() {
 
 };
 
-function handleCellClick() {
+function handleCellClick(clickedCellEvent) {
+  // Creating a variable so I don't have to type clickedCellEvent every time
+  const clickedCell = clickedCellEvent.target;
 
+  /* Grabbing the 'data-cell-index' to identify which cell was clicked on the grid. Then returning that value as an integer using parseint (because it's being returned as a string value currently) */
+  const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
+
+  // Now creating an if statement to check if the game has already been played or if it's been paused
+  if (gameState[clickedCellIndex] !== "" || !gameActive ) {
+    return;
+  }
+
+  // As long as those conditions aren't met the gameplay can continue
+  handleCellPlayed(clickedCell, clickedCellIndex);
+  handleResults();
 };
 
 function handleRestartGame() {
