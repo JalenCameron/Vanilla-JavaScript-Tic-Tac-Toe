@@ -11,20 +11,29 @@ let currentPlayer = "X";
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
 // Creating variables to hold dynamic messages related to the game
-const winningMessage = () => `Congratulations, Player {currentPlayer} has won!`;
+const winningMessage = () => `Congratulations, Player ${currentPlayer} has won!`;
 const tieMessage = () => `Unfortunately the game has ended in a draw`;
 const currentPlayerTurn = () => `It's ${currentPlayer}'s turn`;
 
 // Setting the initial message to let the players know who's turn it is
 displayStatus.innerHTML = currentPlayerTurn();
+
 function handleCellPlayed(clickedCell, clickedCellIndex) {
     // Updating the game state to reflect the player's move
     gameState[clickedCellIndex] = currentPlayer;
     clickedCell.innerHTML = currentPlayer;
+
+    // Changing the colour of the Current Player
+    if (currentPlayer == "X") {
+      document.querySelectorAll(".cell")[clickedCellIndex].style.color = "#7f96BB";
+    } else {
+      document.querySelectorAll(".cell")[clickedCellIndex].style.color = "#FFB6C1";
+    }
 };
 
 function handlePlayerChange() {
-
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    displayStatus.innerHTML = currentPlayerTurn();
 };
 
 // Determing the conditions that need to be met in order to win 
@@ -91,9 +100,18 @@ function handleCellClick(clickedCellEvent) {
 };
 
 function handleRestartGame() {
-
+    // Resetting the gameActive back to true so a new game can initialize
+    gameActive = true;
+    // Resetting the Current Player back to X if they're on O
+    currentPlayer = "X";
+    // Resetting the state so each cell will come up as empty
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    // Resetting the current Display status
+    displayStatus.innerHTML = currentPlayerTurn();
+    // Resetting the Game Board so all cells are empty
+    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
 };
 
 // Adding event listeners to the cells and restart button for functionality
 document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
-document.querySelector('.game-restart').addEventListener('click', handleRestartGame);
+document.querySelector('.game-reset').addEventListener('click', handleRestartGame);
