@@ -60,6 +60,17 @@ function handleResults() {
         gameActive = false;
         return;
     }
+
+    // Also checking whether there are any cells that haven't been chosen yet
+    let roundDraw = !gameState.includes("");
+    if (roundDraw) {
+        displayStatus.innerHTML = tieMessage();
+        gameActive = false;
+        return;
+    }
+
+    // Handling the player change if there hasn't been a determined winner
+    handlePlayerChange();
 };
 
 function handleCellClick(clickedCellEvent) {
